@@ -28,12 +28,22 @@ public class TestClass {
     @Autowired
     private GoogleBooksApi googleBooksApi;
 
+    @Autowired
+    HelionPriceCheck helionPriceCheck;
+
 
 
     @Test
     public void testBook() throws IOException{
 
         GoogleBooksResponse googleBooksResponse = googleBooksApi.getBookList();
+
+    }
+
+    @Test
+    public void jsoupTest() throws IOException {
+
+       helionPriceCheck.helionCheckPrice();
 
     }
 
