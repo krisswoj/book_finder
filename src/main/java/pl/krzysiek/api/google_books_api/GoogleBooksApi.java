@@ -24,6 +24,7 @@ public class GoogleBooksApi {
         HttpURLConnection connection = (HttpURLConnection) new URL("https://www.googleapis.com/books/v1/volumes?q=harry+potter").openConnection();
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestMethod("GET");
+
         String jsonString = readStream(connection.getInputStream());
 
         GoogleBooksResponse googleBooksResponse = gson.fromJson(jsonString, GoogleBooksResponse.class);

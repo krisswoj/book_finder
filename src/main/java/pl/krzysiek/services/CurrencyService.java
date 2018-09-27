@@ -3,7 +3,7 @@ package pl.krzysiek.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.krzysiek.api.currency_api.CurrencyApi;
-import pl.krzysiek.dao.ICurrencyRepository;
+import pl.krzysiek.repository.ICurrencyRepository;
 import pl.krzysiek.domain.Currency;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package pl.krzysiek.dao;
+package pl.krzysiek.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

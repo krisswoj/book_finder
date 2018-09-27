@@ -5,10 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class JsonCurrencyResponse {
 
-
     private Query query;
     private Results results;
-
 
     public Query getQuery() {
         return query;
@@ -38,7 +36,6 @@ public class JsonCurrencyResponse {
             this.count = count;
         }
     }
-
 
     public class Results {
 
