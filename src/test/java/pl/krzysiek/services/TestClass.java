@@ -12,15 +12,10 @@ import pl.krzysiek.api.google_books_api.GoogleBooksApi;
 import pl.krzysiek.api.google_books_api.domain.GoogleBooksResponse;
 import pl.krzysiek.configuration.RestConfiguration;
 import pl.krzysiek.configuration.RestInitializer;
-import pl.krzysiek.configuration.SecurityConfiguration;
-import pl.krzysiek.configuration.WebMvcConfig;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {RestConfiguration.class, RestInitializer.class, SecurityConfiguration.class, WebMvcConfig.class})
-//@Rollback
-//@Commit
-//@Transactional
+@SpringBootTest(classes = {RestConfiguration.class, RestInitializer.class})
 public class TestClass {
 
 
@@ -30,6 +25,9 @@ public class TestClass {
 
     @Autowired
     HelionPriceCheck helionPriceCheck;
+
+    @Autowired
+    BookBookPriceCheck bookBookPriceCheck;
 
 
 
@@ -43,8 +41,9 @@ public class TestClass {
     @Test
     public void jsoupTest() throws IOException {
 
-       helionPriceCheck.helionCheckPrice();
+//        helionPriceCheck.helionCheckPrice();
 
+        bookBookPriceCheck.bookBookCheckPrice();
     }
 
 }

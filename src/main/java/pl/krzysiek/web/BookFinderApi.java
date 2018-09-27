@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.krzysiek.dao.ICurrencyRepository;
 import pl.krzysiek.domain.Currency;
+import pl.krzysiek.services.BookBookPriceCheck;
 import pl.krzysiek.services.CurrencyService;
 
 import javax.transaction.Transactional;
@@ -17,11 +18,25 @@ public class BookFinderApi {
 
 
     @Autowired
-    CurrencyService currencyService;
+    private CurrencyService currencyService;
 
     @Autowired
-    ICurrencyRepository currencyRepository;
+    private ICurrencyRepository currencyRepository;
 
+    @Autowired
+    BookBookPriceCheck bookBookPriceCheck;
+
+
+
+    @RequestMapping(value = "/works", method = RequestMethod.GET)
+    public String worksTest(){
+        return "it works";
+    }
+
+    @RequestMapping(value = "/test-book", method = RequestMethod.GET)
+    public String testBook() throws IOException {
+        return String.valueOf(bookBookPriceCheck.bookBookCheckPrice());
+    }
 
     @RequestMapping(value = "/all-xml", method = RequestMethod.GET)
     public List<Currency> getAllFromXml() {
