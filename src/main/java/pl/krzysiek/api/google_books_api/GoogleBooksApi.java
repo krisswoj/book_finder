@@ -1,57 +1,50 @@
 package pl.krzysiek.api.google_books_api;
 
 import com.google.gson.Gson;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.krzysiek.api.google_books_api.domain.GoogleBooksResponse;
+import pl.krzysiek.services.ConverterService;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URISyntaxException;
 
 @Service
 public class GoogleBooksApi {
 
+    @Autowired
+    private ConverterService converterService;
+
     private final Gson gson = new Gson();
+
+    @Value("${GOOGLE_BOOKS_API_URL}")
+    private String googleUrl;
+
+    @Value("${JSON_CONTENT_TYPE}")
+    private String jsonContent;
 
     public GoogleBooksApi() {
     }
 
-    public GoogleBooksResponse getBookList() throws IOException{
+    public GoogleBooksResponse findBook(String searchTitle) throws IOException, URISyntaxException {
 
-        HttpURLConnection connection = (HttpURLConnection) new URL("https://www.googleapis.com/books/v1/volumes?q=harry+potter").openConnection();
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestMethod("GET");
+        CloseableHttpClient client = HttpClients.createDefault();
 
-        String jsonString = readStream(connection.getInputStream());
+        URIBuilder builder = new URIBuilder(googleUrl);
+        builder.setParameter("q", converterService.searchQueryConverter(searchTitle));
+        HttpGet httpGet = new HttpGet(builder.build());
+        httpGet.setHeader("Content-Type", jsonContent);
 
-        GoogleBooksResponse googleBooksResponse = gson.fromJson(jsonString, GoogleBooksResponse.class);
+        CloseableHttpResponse response = client.execute(httpGet);
+        String res = converterService.HttpResponseConverter(response);
+        client.close();
 
-        return googleBooksResponse;
-    }
-
-    private String readStream(InputStream in) {
-        BufferedReader reader = null;
-        StringBuffer response = new StringBuffer();
-        try {
-            reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return response.toString();
+        return gson.fromJson(res, GoogleBooksResponse.class);
     }
 }

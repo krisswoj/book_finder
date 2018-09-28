@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "allegro_token")
-public class AllegroResponseApi {
+public class AllegroResponseToken {
 
     @SerializedName("id")
     private int id;
@@ -32,7 +32,7 @@ public class AllegroResponseApi {
     }
 
     @Basic
-    @Column(name = "access_token")
+    @Column(name = "access_token", columnDefinition = "TEXT")
     public String getAccessToken() {
         return accessToken;
     }
@@ -45,7 +45,7 @@ public class AllegroResponseApi {
     }
 
     @Basic
-    @Column(name = "refresh_token")
+    @Column(name = "refresh_token", columnDefinition = "TEXT")
     public String getRefreshToken() {
         return refreshToken;
     }
@@ -99,7 +99,7 @@ public class AllegroResponseApi {
         this.jti = jti;
     }
 
-    public AllegroResponseApi(String accessToken, String tokenType, String refreshToken, Integer expiresIn, String scope, String jti) {
+    public AllegroResponseToken(String accessToken, String tokenType, String refreshToken, Integer expiresIn, String scope, String jti) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.refreshToken = refreshToken;
@@ -108,6 +108,6 @@ public class AllegroResponseApi {
         this.jti = jti;
     }
 
-    public AllegroResponseApi() {
+    public AllegroResponseToken() {
     }
 }

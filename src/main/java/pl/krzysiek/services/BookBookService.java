@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 @Service
-public class BookBookPriceCheck {
+public class BookBookService {
 
     @Autowired
-    private PriceChecker priceChecker;
+    private ConverterService converterService;
 
     private final String brandName = "Book Book";
     private final String brandDomain = "https://www.bookbook.pl";
@@ -23,16 +23,12 @@ public class BookBookPriceCheck {
 
         try {
             String url = "https://www.bookbook.pl/s?q=9788380085091";
-            Document doc = priceChecker.jsoupConnector(url);
+            Document doc = converterService.jsoupConnector(url);
 
             String zobaczymy = directLinkToBookBook(doc);
             System.out.println("stan linku: " + zobaczymy);
 
-//            if(zobaczymy != null){
-//                System.out.println("Cena ksiazki: " + priceChecker.priceConventer(bookPriceInStringBookBook(zobaczymy)));
-//            }
-
-            priceBook = priceChecker.priceConventer(bookPriceInStringBookBook(zobaczymy));
+            priceBook = converterService.priceConventer(bookPriceInStringBookBook(zobaczymy));
             return priceBook;
 
         } catch (SocketTimeoutException e) {
@@ -60,7 +56,7 @@ public class BookBookPriceCheck {
      */
 
     private String bookPriceInStringBookBook(String directBookUrl) throws IOException {
-        Document document = priceChecker.jsoupConnector(directBookUrl);
+        Document document = converterService.jsoupConnector(directBookUrl);
 
         Elements element = document.select(".product-unavailable-label");
         if (element.text().contains("niedostępna"))

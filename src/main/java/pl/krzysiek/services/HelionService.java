@@ -7,16 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
-public class HelionPriceCheck {
+public class HelionService {
 
     @Autowired
-    private PriceChecker priceChecker;
+    private ConverterService converterService;
 
     private final String brandName = "Helion";
 
@@ -24,14 +20,14 @@ public class HelionPriceCheck {
 
         try {
             String url = "https://helion.pl/search?qa=&serwisyall=0&szukaj=isbn%253A9788328330061";
-            Document doc = priceChecker.jsoupConnector(url);
+            Document doc = converterService.jsoupConnector(url);
 
 
             String zobaczymy = directLinkToBook(doc);
             System.out.println("stan linku: " + zobaczymy);
 
             if(zobaczymy != null){
-                System.out.println("Cena ksiazki: " + priceChecker.priceConventer(bookPriceInString(zobaczymy)));
+                System.out.println("Cena ksiazki: " + converterService.priceConventer(bookPriceInString(zobaczymy)));
             }
 
 
@@ -58,7 +54,7 @@ public class HelionPriceCheck {
      */
 
     private String bookPriceInString(String directBookUrl) throws IOException {
-        Document document = priceChecker.jsoupConnector(directBookUrl);
+        Document document = converterService.jsoupConnector(directBookUrl);
         Elements element = document.select(".book-price").select("span");
 
         if (element.text().contains("niedostępna"))
