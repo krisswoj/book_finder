@@ -3,6 +3,8 @@ package pl.krzysiek.api.google_books_api.domain;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Optional;
+
 public class ImageLinks {
 
     @SerializedName("smallThumbnail")
@@ -28,8 +30,8 @@ public class ImageLinks {
         this.thumbnail = thumbnail;
     }
 
-    public String getSmallThumbnail() {
-        return smallThumbnail;
+    public Optional getSmallThumbnail() {
+        return Optional.ofNullable(smallThumbnail);
     }
 
     public void setSmallThumbnail(String smallThumbnail) {

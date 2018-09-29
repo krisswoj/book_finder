@@ -3,6 +3,8 @@ package pl.krzysiek.api.google_books_api.domain;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Optional;
+
 public class IndustryIdentifier {
 
     @SerializedName("type")
@@ -43,5 +45,4 @@ public class IndustryIdentifier {
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
-
 }

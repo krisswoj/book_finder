@@ -4,14 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import pl.krzysiek.api.allegro_api.domain.AllegroApiResponeAuction;
-import pl.krzysiek.domain.AllegroResponseToken;
+import pl.krzysiek.api.allegro_api.AllegroApiResponeAuction;
+import pl.krzysiek.domain.AllegroToken;
 import pl.krzysiek.repository.ICurrencyRepository;
 import pl.krzysiek.domain.Currency;
 import pl.krzysiek.services.AllegroServices;
 import pl.krzysiek.services.BookBookService;
 import pl.krzysiek.services.CurrencyService;
-import pl.krzysiek.services.ConverterService;
 
 import javax.transaction.Transactional;
 import java.io.*;
@@ -42,13 +41,13 @@ public class BookFinderApi {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String allegroCode(@RequestParam(value = "code") String code) throws IOException {
-        AllegroResponseToken info = allegroServices.allegroApiTokenAuthO(code);
+        AllegroToken info = allegroServices.allegroApiTokenAuthO(code);
         return info.getAccessToken();
     }
 
     @RequestMapping(value = "/test-allegro", method = RequestMethod.GET)
     public AllegroApiResponeAuction allegroTest() throws IOException, URISyntaxException {
-        return allegroServices.allegroAuctionRespone("1680", "java");
+        return allegroServices.allegroAuctionRespone("java");
     }
 
     @RequestMapping(value = "/works", method = RequestMethod.GET)
@@ -64,12 +63,12 @@ public class BookFinderApi {
     @RequestMapping(value = "/allegro", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AllegroResponseToken tokenData(@RequestBody AllegroResponseToken allegroResponseToken) {
-        return allegroServices.saveToken(allegroResponseToken);
+    public AllegroToken tokenData(@RequestBody AllegroToken allegroToken) {
+        return allegroServices.saveToken(allegroToken);
     }
 
     @RequestMapping(value = "/all-allegro", method = RequestMethod.GET)
-    public List<AllegroResponseToken> allegroResponseApiList() {
+    public List<AllegroToken> allegroResponseApiList() {
         return allegroServices.allegroResponseApis();
     }
 

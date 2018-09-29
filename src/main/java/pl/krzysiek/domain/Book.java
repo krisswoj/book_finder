@@ -7,66 +7,82 @@ public class Book {
     private int id;
     private String title;
     private String authors;
-    private String publisher;
     private String publishedDate;
     private String description;
-    private int pageAmount;
+    private String isbn10;
+    private String isbn13;
     private String pictureLink;
-    private List<IndustryBookIdentifier> industryBookIdentifiers;
-    private List<ComparsionBookPrice> comparsionBookPrices;
-
-    public Book(String title, String authors, String publisher, String publishedDate, String description, int pageAmount, String pictureLink, List<IndustryBookIdentifier> industryBookIdentifiers) {
-        this.title = title;
-        this.authors = authors;
-        this.publisher = publisher;
-        this.publishedDate = publishedDate;
-        this.description = description;
-        this.pageAmount = pageAmount;
-        this.pictureLink = pictureLink;
-        this.industryBookIdentifiers = industryBookIdentifiers;
-    }
+    private List<CompareBookPrices> compareBookPrices;
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getAuthors() {
         return authors;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public void setAuthors(String authors) {
+        this.authors = authors;
     }
 
     public String getPublishedDate() {
         return publishedDate;
     }
 
+    public void setPublishedDate(String publishedDate) {
+        this.publishedDate = publishedDate;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public int getPageAmount() {
-        return pageAmount;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIsbn10() {
+        return isbn10;
+    }
+
+    public void setIsbn10(String isbn10) {
+        this.isbn10 = isbn10;
+    }
+
+    public String getIsbn13() {
+        return isbn13;
+    }
+
+    public void setIsbn13(String isbn13) {
+        this.isbn13 = isbn13;
     }
 
     public String getPictureLink() {
         return pictureLink;
     }
 
-    public List<IndustryBookIdentifier> getIndustryBookIdentifiers() {
-        return industryBookIdentifiers;
+    public void setPictureLink(String pictureLink) {
+        this.pictureLink = pictureLink;
     }
 
-    public List<ComparsionBookPrice> getComparsionBookPrices() {
-        return comparsionBookPrices;
+    public List<CompareBookPrices> getCompareBookPrices() {
+        return compareBookPrices;
     }
 
-    public void setComparsionBookPrices(List<ComparsionBookPrice> comparsionBookPrices) {
-        this.comparsionBookPrices = comparsionBookPrices;
+    public void setCompareBookPrices(List<CompareBookPrices> compareBookPrices) {
+        this.compareBookPrices = compareBookPrices;
     }
 }

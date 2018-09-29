@@ -4,6 +4,8 @@ package pl.krzysiek.api.allegro_api.domain;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Optional;
+
 public class LowestPrice {
 
     @SerializedName("amount")
@@ -12,6 +14,11 @@ public class LowestPrice {
     @SerializedName("currency")
     @Expose
     private String currency;
+
+//    public Optional getAmount() {
+//        return Optional.ofNullable(amount);
+//    }
+
 
     public String getAmount() {
         return amount;

@@ -37,6 +37,8 @@ public class ConverterService {
 
     public Double priceConventer(String stringPrice) throws IOException {
 
+        if (stringPrice == null) return 0.0;
+
         Pattern compiledPattern = Pattern.compile("\\d{1,}[,. ]\\d{1,}");
         Matcher matcher = compiledPattern.matcher(stringPrice);
 

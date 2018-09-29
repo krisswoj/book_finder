@@ -2,7 +2,6 @@ package pl.krzysiek.services;
 
 import com.google.gson.Gson;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -14,8 +13,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pl.krzysiek.api.allegro_api.domain.AllegroApiResponeAuction;
-import pl.krzysiek.domain.AllegroResponseToken;
+import pl.krzysiek.api.allegro_api.AllegroApiResponeAuction;
+import pl.krzysiek.domain.AllegroToken;
 import pl.krzysiek.repository.AllegroTokenRepository;
 
 import java.io.IOException;
@@ -59,19 +58,21 @@ public class AllegroServices {
     @Value("${ALLEGRO_ACCEPT_API_IFNO}")
     private String apiInfo;
 
-    public List<AllegroResponseToken> allegroResponseApis() {
-        return (List<AllegroResponseToken>) allegroTokenRepository.findAll();
+    private int[] allegroSellersId = {1680, 19602284, 38916592, 24531735, 35529175, 24497221, 44158295, 38164195, 42764385, 11409129};
+
+    public List<AllegroToken> allegroResponseApis() {
+        return (List<AllegroToken>) allegroTokenRepository.findAll();
     }
 
-    public AllegroResponseToken saveToken(AllegroResponseToken allegroResponseToken) {
-        return allegroTokenRepository.save(allegroResponseToken);
+    public AllegroToken saveToken(AllegroToken allegroToken) {
+        return allegroTokenRepository.save(allegroToken);
     }
 
-    private String base64Encoder(String clientId, String clientSecret){
+    private String base64Encoder(String clientId, String clientSecret) {
         return Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
     }
 
-    public String allegroToken(){
+    public String allegroToken() {
         return allegroTokenRepository.findTopByOrderByIdDesc().getAccessToken();
     }
 
@@ -86,7 +87,7 @@ public class AllegroServices {
         return builder.toString();
     }
 
-    public AllegroResponseToken allegroApiTokenAuthO(String code) throws IOException {
+    public AllegroToken allegroApiTokenAuthO(String code) throws IOException {
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(allegroTokenUrl);
@@ -100,21 +101,21 @@ public class AllegroServices {
         httpPost.setHeader("Authorization", "Basic " + base64Encoder(clientId, clientSecret));
         CloseableHttpResponse response = client.execute(httpPost);
         String res = converterService.HttpResponseConverter(response);
-        AllegroResponseToken allegroResponseToken = gson.fromJson(res, AllegroResponseToken.class);
+        AllegroToken allegroToken = gson.fromJson(res, AllegroToken.class);
 
         client.close();
 
-        return saveToken(allegroResponseToken);
+        return saveToken(allegroToken);
     }
 
-    public AllegroApiResponeAuction allegroAuctionRespone(String sellerId, String searchPhrase) throws IOException, URISyntaxException {
+    public AllegroApiResponeAuction allegroAuctionRespone(String searchPhrase) throws IOException, URISyntaxException {
 
         CloseableHttpClient client = HttpClients.createDefault();
 
         URIBuilder builder = new URIBuilder(offersUrl);
         builder
                 .setParameter("categoryId", bookCategory)
-                .setParameter("seller.id", sellerId)
+                .setParameters(nameValuePairList(allegroSellersId))
                 .setParameter("searchMode", "DESCRIPTIONS")
                 .setParameter("phrase", searchPhrase);
 
@@ -127,6 +128,14 @@ public class AllegroServices {
         client.close();
 
         return gson.fromJson(res, AllegroApiResponeAuction.class);
+    }
+
+    private List<NameValuePair> nameValuePairList(int[] allegroSellersIds) {
+        List<NameValuePair> nameValuePairList = new ArrayList<>();
+        for (int element : allegroSellersIds) {
+            nameValuePairList.add(new BasicNameValuePair("seller.id", String.valueOf(element)));
+        }
+        return nameValuePairList;
     }
 
 }

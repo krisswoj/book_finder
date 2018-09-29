@@ -1,9 +1,10 @@
-package pl.krzysiek.api.google_books_api.domain;
+package pl.krzysiek.api.google_books_api;
 
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import pl.krzysiek.api.google_books_api.domain.Item;
 
 public class GoogleBooksResponse {
 

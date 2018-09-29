@@ -1,9 +1,10 @@
 
-package pl.krzysiek.api.allegro_api.domain;
+package pl.krzysiek.api.allegro_api;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import pl.krzysiek.api.allegro_api.domain.*;
 
 public class AllegroApiResponeAuction {
 
