@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout :: page">
+<div class="container" th:fragment="content">
+
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header smaller_h1">Porównaj cene książki</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="panel-body">
+                    <form autocomplete="off" th:action="@{/}"
+                          th:object="${book_view}" method="post" class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <p>Wprowadz tytuł ksiazki</p>
+                            <input type="text" th:field="*{title}" placeholder="tytuł książki"
+                                   class="form-control"/>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Wyszukaj</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel-body">
+
+                    <div th:if="${not #lists.isEmpty(book_list)}">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Okladka</th>
+                                <th>Tytul</th>
+                                <th>Data publikacji</th>
+                                <th>Opis</th>
+                                <th>Opcje zakupu</th>
+
+                            </tr>
+                            <tr th:each="count : ${book_list}">
+                                <td><img th:src="${count.pictureLink}"></td>
+                                <td th:text="${count.title}"></td>
+                                <td th:text="${count.publishedDate}"></td>
+                                <td th:text="${count.description}"></td>
+                                <td>
+                                    <table>
+
+                                        <tr>
+                                            <th>Sklep</th>
+                                            <th>Link</th>
+                                            <th>Cena</th>
+                                            <th>Dostawa</th>
+                                        </tr>
+
+                                        <tr th:each="countShop : ${count.compareBookPrices}">
+                                            <td th:text="${countShop.storeName}"></td>
+                                            <td><a th:href="${countShop.directLink}" target="_blank">Kup</a></td>
+                                            <td th:text="${#numbers.formatDecimal(countShop.price,1,2)+' zł'}"></td>
+                                            <td th:text="${#numbers.formatDecimal(countShop.shippingCost,1,2)+' zł'}"></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

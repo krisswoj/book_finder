@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "allegro_token")
@@ -95,15 +96,6 @@ public class AllegroToken {
     }
 
     public void setJti(String jti) {
-        this.jti = jti;
-    }
-
-    public AllegroToken(String accessToken, String tokenType, String refreshToken, Integer expiresIn, String scope, String jti) {
-        this.accessToken = accessToken;
-        this.tokenType = tokenType;
-        this.refreshToken = refreshToken;
-        this.expiresIn = expiresIn;
-        this.scope = scope;
         this.jti = jti;
     }
 

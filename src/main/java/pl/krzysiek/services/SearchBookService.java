@@ -51,7 +51,7 @@ public class SearchBookService {
             book.setDescription(itemBook.getVolumeInfo().getDescription());
 
             if (itemBook.getVolumeInfo().getImageLinks() != null)
-                book.setPictureLink(itemBook.getVolumeInfo().getImageLinks().getSmallThumbnail().orElse("none").toString());
+                book.setPictureLink(itemBook.getVolumeInfo().getImageLinks().getSmallThumbnail().orElse("null").toString());
 
             setIsbn(itemBook.getVolumeInfo().getIndustryIdentifiers(), book);
             checkGoogleStore(compareBookPricesList, book, itemBook);

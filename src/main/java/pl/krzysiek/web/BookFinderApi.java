@@ -39,20 +39,7 @@ public class BookFinderApi {
     private Gson gson = new Gson();
 
 
-    @RequestMapping(value = "/new-token", method = RequestMethod.GET)
-    public ModelAndView allegroNewToken() throws URISyntaxException {
-        return new ModelAndView("redirect:" + allegroServices.allegroAuthUrl());
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String allegroCode(@RequestParam(value = "code") String code) throws IOException {
-        AllegroToken info = allegroServices.allegroApiTokenAuthO(code);
-        return info.getAccessToken();
-
-    }
-
-
-    @RequestMapping(value = "/find", method = RequestMethod.GET)
+    @GetMapping(value = "/find", params = "book")
     public String checkBookPrices(@RequestParam(value = "book") String bookName) throws IOException, URISyntaxException {
 
         Type founderListType = new TypeToken<List<Book>>() {
@@ -60,45 +47,57 @@ public class BookFinderApi {
         return gson.toJson(searchBookService.findBook(bookName), founderListType);
     }
 
-    @RequestMapping(value = "/works", method = RequestMethod.GET)
+    @GetMapping(value = "/new-token")
+    public ModelAndView allegroNewToken() throws URISyntaxException {
+        return new ModelAndView("redirect:" + allegroServices.allegroAuthUrl());
+    }
+
+    @GetMapping(value = "/", params = "code")
+    public String allegroCode(@RequestParam(value = "code") String code) throws IOException {
+        AllegroToken info = allegroServices.allegroApiTokenAuthO(code);
+        return "token has been refreshed";
+
+    }
+
+    @GetMapping(value = "/works")
     public String worksTest() {
         return "it works";
     }
 
 
-    @RequestMapping(value = "/allegro", method = RequestMethod.POST,
+    @PostMapping(value = "/allegro",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AllegroToken tokenData(@RequestBody AllegroToken allegroToken) {
         return allegroServices.saveToken(allegroToken);
     }
 
-    @RequestMapping(value = "/all-allegro", method = RequestMethod.GET)
+    @GetMapping(value = "/all-allegro")
     public List<AllegroToken> allegroResponseApiList() {
         return allegroServices.allegroResponseApis();
     }
 
-    @RequestMapping(value = "/all-xml", method = RequestMethod.GET)
+    @GetMapping(value = "/all-xml")
     public List<Currency> getAllFromXml() {
         return currencyService.allCurrenciesFromXml();
     }
 
-    @RequestMapping(value = "/update-all", method = RequestMethod.GET)
+    @GetMapping(value = "/update-all")
     public List<Currency> updateCurrencyRate() throws IOException {
         return currencyService.updateRateAllCurrency();
     }
 
-    @RequestMapping(value = "/last-rates/{amount}", method = RequestMethod.GET)
+    @GetMapping(value = "/last-rates/{amount}")
     public List<List<Currency>> lastXAllCurrency(@PathVariable("amount") Integer amount) {
         return currencyService.lastXRatesAllCurrency(amount);
     }
 
-    @RequestMapping(value = "/last-rates", method = RequestMethod.GET)
+    @GetMapping(value = "/last-rates")
     public List<Currency> lastAllCurrencyRates() {
         return currencyService.lastAllCurrencyRates();
     }
 
-    @RequestMapping(value = "/last-rate/{currencyPair}", method = RequestMethod.GET)
+    @GetMapping(value = "/last-rate/{currencyPair}")
     public Currency lastCurrency(@PathVariable("currencyPair") String currencyPair) {
         return currencyRepository.lastSingleCurrencyPairRates(currencyPair);
     }

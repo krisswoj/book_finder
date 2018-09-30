@@ -88,25 +88,4 @@ public class CurrencyService {
     private Double rateValue(String currencyPair) {
         return currencyRepository.lastSingleCurrencyPairRates(currencyPair).getRateValue();
     }
-
-    private Double currencyDivision(Double currencyValue, String currencyPair, Double feeRate) {
-        return (currencyValue / (rateValue(currencyPair) * feeRate));
-    }
-
-    private Double currencyMultiplication(Double currencyValue, String currencyPair, Double feeRate) {
-        return (currencyValue * rateValue(currencyPair) * feeRate);
-    }
-
-    private Double currencyWithFee(String currencyPair, Double feeRate) {
-        return (rateValue(currencyPair) * feeRate);
-    }
-
-
-    private Double currencyDivisionFee(Double currencyValue, String currencyPair, Double feeRate) {
-        return ((currencyValue / (rateValue(currencyPair))) - (currencyValue / (rateValue(currencyPair) * feeRate)));
-    }
-
-    private Double currencyMultiplicationFee(Double currencyValue, String currencyPair, Double feeRate) {
-        return ((currencyValue * (rateValue(currencyPair) * feeRate))) - currencyValue * rateValue(currencyPair);
-    }
 }

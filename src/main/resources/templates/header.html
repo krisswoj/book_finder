@@ -1,38 +1,11 @@
 <header xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <nav class="navbar-inverse">
         <div class="navbar-header">
-            <a class="navbar-brand">Cantor</a>
+            <a class="navbar-brand">Porównywarka</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">Wyślij pieniądze</a></li>
-                <li><a href="#">Wymiana walut</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Dodaj środki
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="./show-food-ingredients">SMS Premium</a></li>
-                        <li><a href="./add-food-ingredient">PayPal</a></li>
-                        <li><a href="./add-food-ingredient">Przelew bankowy</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Kasyno</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Zarządzaj kontem
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="./ready-meals-list">Twoje dane</a></li>
-                        <li><a href="./create-meal">Historia operacji</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="get">
-                        <button class="btn btn-md btn-danger btn-block logout_button" name="registration"
-                                type="Submit">Logout
-                        </button>
-                    </form>
-                </li>
+                <li><a href="/">Strona główna</a></li>
             </ul>
         </div>
     </nav>
