@@ -85,4 +85,7 @@ public class Book {
     public void setCompareBookPrices(List<CompareBookPrices> compareBookPrices) {
         this.compareBookPrices = compareBookPrices;
     }
+
+    public Book() {
+    }
 }

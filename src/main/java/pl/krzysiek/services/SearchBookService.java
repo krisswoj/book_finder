@@ -1,6 +1,7 @@
 package pl.krzysiek.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.krzysiek.api.allegro_api.domain.Regular;
 import pl.krzysiek.api.google_books_api.domain.IndustryIdentifier;
@@ -24,6 +25,15 @@ public class SearchBookService {
     @Autowired
     private ConverterService converterService;
 
+    @Autowired
+    private HelionService helionService;
+
+    @Autowired
+    private BookBookService bookBookService;
+
+    @Value("${ALLEGRO_OFFER_URL}")
+    private String allegroUrl;
+
     public List<Book> findBook(String bookTitle) throws IOException, URISyntaxException {
 
         List<Book> booksList = new ArrayList<>();
@@ -40,12 +50,17 @@ public class SearchBookService {
             book.setPublishedDate(itemBook.getVolumeInfo().getPublishedDate());
             book.setDescription(itemBook.getVolumeInfo().getDescription());
 
-            if(itemBook.getVolumeInfo().getImageLinks() != null)
+            if (itemBook.getVolumeInfo().getImageLinks() != null)
                 book.setPictureLink(itemBook.getVolumeInfo().getImageLinks().getSmallThumbnail().orElse("none").toString());
 
             setIsbn(itemBook.getVolumeInfo().getIndustryIdentifiers(), book);
             checkGoogleStore(compareBookPricesList, book, itemBook);
+
             checkAllegro(compareBookPricesList, book.getIsbn10(), book.getIsbn13(), book);
+            checkHelionStore(compareBookPricesList, book);
+//            checkBookBookStore(compareBookPricesList, book);
+
+            compareBookPricesList.sort(Comparator.comparing(CompareBookPrices::getPrice));
 
             book.setCompareBookPrices(compareBookPricesList);
             booksList.add(book);
@@ -53,6 +68,8 @@ public class SearchBookService {
         }
         return booksList;
     }
+
+
 
     private Book setIsbn(List<IndustryIdentifier> list, Book book) {
 
@@ -91,9 +108,8 @@ public class SearchBookService {
         for (Regular element : allegroServices.allegroAuctionRespone(isbn).getItems().getRegular()) {
 
             CompareBookPrices compareBookPrices = new CompareBookPrices();
-            compareBookPrices.setBook(book);
             compareBookPrices.setStoreName("Allegro");
-            compareBookPrices.setDirectLink(element.getId());
+            compareBookPrices.setDirectLink(allegroUrl+element.getId());
             compareBookPrices.setStoreBookTitle(element.getName());
             compareBookPrices.setCurrency(element.getSellingMode().getPrice().getCurrency());
             compareBookPrices.setPrice(converterService.priceConventer(element.getSellingMode().getPrice().getAmount()));
@@ -109,14 +125,76 @@ public class SearchBookService {
         if (!itemBook.getSaleInfo().getSaleability().equals("FOR_SALE")) return compareBookPricesList;
 
         CompareBookPrices compareBookPrices = new CompareBookPrices();
-        compareBookPrices.setBook(book);
         compareBookPrices.setStoreName("Google store");
         compareBookPrices.setDirectLink(itemBook.getSaleInfo().getBuyLink());
         compareBookPrices.setCurrency(itemBook.getSaleInfo().getRetailPrice().getCurrencyCode());
         compareBookPrices.setPrice(itemBook.getSaleInfo().getRetailPrice().getAmount());
         compareBookPricesList.add(compareBookPrices);
         return compareBookPricesList;
-
     }
 
+    private List<CompareBookPrices> checkHelionStore(List<CompareBookPrices> compareBookPricesList, Book book) throws IOException {
+
+        CompareBookPrices compareBookPrices = helionService.helionCheckPrice(book.getIsbn10());
+        CompareBookPrices compareBookPrices2 = helionService.helionCheckPrice(book.getIsbn13());
+
+        if(compareBookPrices != null){
+            compareBookPricesList.add(compareBookPrices);
+        }
+
+        if(compareBookPrices2 != null){
+            compareBookPricesList.add(compareBookPrices2);
+        }
+
+        return compareBookPricesList;
+    }
+
+    private List<CompareBookPrices> checkBookBookStore(List<CompareBookPrices> compareBookPricesList, Book book) throws IOException {
+
+        CompareBookPrices compareBookPrices = bookBookService.bookBookCheckPrice(book.getIsbn10());
+        CompareBookPrices compareBookPrices2 = bookBookService.bookBookCheckPrice(book.getIsbn13());
+
+        if(compareBookPrices != null){
+            compareBookPricesList.add(compareBookPrices);
+        }
+
+        if(compareBookPrices2 != null){
+            compareBookPricesList.add(compareBookPrices2);
+        }
+
+        return compareBookPricesList;
+    }
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

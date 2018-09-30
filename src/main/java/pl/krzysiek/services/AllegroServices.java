@@ -58,7 +58,10 @@ public class AllegroServices {
     @Value("${ALLEGRO_ACCEPT_API_IFNO}")
     private String apiInfo;
 
-    private int[] allegroSellersId = {1680, 19602284, 38916592, 24531735, 35529175, 24497221, 44158295, 38164195, 42764385, 11409129};
+    @Value("${ALLEGRO_IDS_SELLERS}")
+    private int[] allegroSellersId;
+
+//    private int[] allegroSellersId = {1680, 19602284, 38916592, 24531735, 35529175, 24497221, 44158295, 38164195, 42764385, 11409129};
 
     public List<AllegroToken> allegroResponseApis() {
         return (List<AllegroToken>) allegroTokenRepository.findAll();

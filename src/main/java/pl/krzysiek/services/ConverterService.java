@@ -42,6 +42,8 @@ public class ConverterService {
         Pattern compiledPattern = Pattern.compile("\\d{1,}[,. ]\\d{1,}");
         Matcher matcher = compiledPattern.matcher(stringPrice);
 
+        System.out.println("Cena do obroki:" + stringPrice);
+
         List<Double> allMatches = new ArrayList<>();
         while (matcher.find()) {
             allMatches.add(Double.parseDouble(matcher.group()

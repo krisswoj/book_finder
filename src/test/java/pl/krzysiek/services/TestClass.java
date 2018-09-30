@@ -113,7 +113,7 @@ public class TestClass {
 //        GoogleBooksResponse googleBooksResponse = googleBooksService.findBook("Harry Potter i przeklęte dziecko J. K.");
 //        googleBooksResponse.getItems();
 
-        List<Book> bookList = searchBookService.findBook("Harry Potter i przeklęte dziecko J. K.");
+        List<Book> bookList = searchBookService.findBook("365 dni");
         bookList.size();
 
     }

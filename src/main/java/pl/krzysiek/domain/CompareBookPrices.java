@@ -3,7 +3,6 @@ package pl.krzysiek.domain;
 public class CompareBookPrices {
 
     private int id;
-    private Book book;
     private String storeName;
     private String storeBookTitle;
     private String directLink;
@@ -11,7 +10,6 @@ public class CompareBookPrices {
     private double price;
     private double shippingCost;
     private double additionalCosts;
-    private boolean availability;
 
     public int getId() {
         return id;
@@ -19,14 +17,6 @@ public class CompareBookPrices {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
     }
 
     public String getStoreName() {
@@ -83,13 +73,5 @@ public class CompareBookPrices {
 
     public void setAdditionalCosts(double additionalCosts) {
         this.additionalCosts = additionalCosts;
-    }
-
-    public boolean isAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(boolean availability) {
-        this.availability = availability;
     }
 }

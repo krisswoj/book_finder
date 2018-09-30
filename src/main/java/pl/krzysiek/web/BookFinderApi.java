@@ -1,19 +1,22 @@
 package pl.krzysiek.web;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import pl.krzysiek.api.allegro_api.AllegroApiResponeAuction;
 import pl.krzysiek.domain.AllegroToken;
+import pl.krzysiek.domain.Book;
 import pl.krzysiek.repository.ICurrencyRepository;
 import pl.krzysiek.domain.Currency;
 import pl.krzysiek.services.AllegroServices;
-import pl.krzysiek.services.BookBookService;
 import pl.krzysiek.services.CurrencyService;
+import pl.krzysiek.services.SearchBookService;
 
 import javax.transaction.Transactional;
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -28,10 +31,12 @@ public class BookFinderApi {
     private ICurrencyRepository currencyRepository;
 
     @Autowired
-    private BookBookService bookBookService;
+    private AllegroServices allegroServices;
 
     @Autowired
-    private AllegroServices allegroServices;
+    private SearchBookService searchBookService;
+
+    private Gson gson = new Gson();
 
 
     @RequestMapping(value = "/new-token", method = RequestMethod.GET)
@@ -43,11 +48,16 @@ public class BookFinderApi {
     public String allegroCode(@RequestParam(value = "code") String code) throws IOException {
         AllegroToken info = allegroServices.allegroApiTokenAuthO(code);
         return info.getAccessToken();
+
     }
 
-    @RequestMapping(value = "/test-allegro", method = RequestMethod.GET)
-    public AllegroApiResponeAuction allegroTest() throws IOException, URISyntaxException {
-        return allegroServices.allegroAuctionRespone("java");
+
+    @RequestMapping(value = "/find", method = RequestMethod.GET)
+    public String checkBookPrices(@RequestParam(value = "book") String bookName) throws IOException, URISyntaxException {
+
+        Type founderListType = new TypeToken<List<Book>>() {
+        }.getType();
+        return gson.toJson(searchBookService.findBook(bookName), founderListType);
     }
 
     @RequestMapping(value = "/works", method = RequestMethod.GET)
@@ -55,10 +65,6 @@ public class BookFinderApi {
         return "it works";
     }
 
-    @RequestMapping(value = "/test-book", method = RequestMethod.GET)
-    public String testBook() throws IOException {
-        return String.valueOf(bookBookService.bookBookCheckPrice());
-    }
 
     @RequestMapping(value = "/allegro", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
