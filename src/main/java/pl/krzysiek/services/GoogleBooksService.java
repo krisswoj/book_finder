@@ -41,11 +41,9 @@ public class GoogleBooksService {
         builder.setParameter("country", "PL");
         builder.setParameter("tbm", "bks");
         builder.setParameter("maxResults", "5");
-//        builder.setParameter("orderBy", "newest");
         builder.setParameter("printType", "books");
         HttpGet httpGet = new HttpGet(URLDecoder.decode(builder.build().toString()));
 
-        System.out.println("Wygenerowany link: " + httpGet.toString());
         httpGet.setHeader("Content-Type", jsonContent);
 
         CloseableHttpResponse response = client.execute(httpGet);

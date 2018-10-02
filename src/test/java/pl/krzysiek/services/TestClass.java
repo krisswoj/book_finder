@@ -88,8 +88,8 @@ public class TestClass {
     @Test
     public void wordConverter() throws IOException, URISyntaxException {
 
-//        GoogleBooksResponse googleBooksResponse = googleBooksService.findBook("harry potter");
-//        googleBooksResponse.getItems();
+        GoogleBooksResponse googleBooksResponse = googleBooksService.findBook("harry potter");
+        googleBooksResponse.getItems();
 
 //        System.out.println("Auth url: " + allegroServices.allegroAuthUrl());
 
@@ -105,7 +105,7 @@ public class TestClass {
     @Test
     public void testBookSearch() throws IOException, URISyntaxException {
 //        Book book = searchBookService.findBook("Język C++. Szkoła programowania. Wydanie VI");
-//        book.equals("dupa");
+//        book.equals("");
 
 //        String wynikconwe2w = converterService.searchQueryConverter("Harry Potter i przeklęte dziecko J. K.");
 //        System.out.println(wynikconwe2w);

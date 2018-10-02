@@ -130,6 +130,7 @@ public class AllegroServices {
         String res = converterService.HttpResponseConverter(response);
         client.close();
 
+
         return gson.fromJson(res, AllegroApiResponeAuction.class);
     }
 

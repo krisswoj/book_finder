@@ -64,7 +64,7 @@ public class ConverterService {
         return result.toString();
     }
 
-    private String removeAccents(String text) {
+    public String removeAccents(String text) {
         return text == null ? null :
                 Normalizer.normalize(text, Form.NFD)
                         .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");

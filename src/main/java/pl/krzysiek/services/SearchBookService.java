@@ -54,7 +54,7 @@ public class SearchBookService {
                 book.setPictureLink(itemBook.getVolumeInfo().getImageLinks().getSmallThumbnail().orElse("null").toString());
 
             setIsbn(itemBook.getVolumeInfo().getIndustryIdentifiers(), book);
-            checkGoogleStore(compareBookPricesList, book, itemBook);
+            checkGoogleStore(compareBookPricesList, itemBook);
 
             checkAllegro(compareBookPricesList, book.getIsbn10(), book.getIsbn13(), book);
             checkHelionStore(compareBookPricesList, book);
@@ -94,13 +94,13 @@ public class SearchBookService {
 
         if (isbn10 == null && isbn13 == null) return compareBookPricesList;
 
-        allegroSearchByIsbn(compareBookPricesList, isbn13, book);
-        allegroSearchByIsbn(compareBookPricesList, isbn10, book);
+        allegroSearchByIsbn(compareBookPricesList, isbn13);
+        allegroSearchByIsbn(compareBookPricesList, isbn10);
 
         return compareBookPricesList;
     }
 
-    private List<CompareBookPrices> allegroSearchByIsbn(List<CompareBookPrices> compareBookPricesList, String isbn, Book book) throws IOException, URISyntaxException {
+    private List<CompareBookPrices> allegroSearchByIsbn(List<CompareBookPrices> compareBookPricesList, String isbn) throws IOException, URISyntaxException {
 
         if (allegroServices.allegroAuctionRespone(isbn).getItems().getRegular().size() == 0)
             return compareBookPricesList;
@@ -113,14 +113,14 @@ public class SearchBookService {
             compareBookPrices.setStoreBookTitle(element.getName());
             compareBookPrices.setCurrency(element.getSellingMode().getPrice().getCurrency());
             compareBookPrices.setPrice(converterService.priceConventer(element.getSellingMode().getPrice().getAmount()));
-            compareBookPrices.setShippingCost(converterService.priceConventer((String) element.getDelivery().getLowestPrice().getAmount()));
+            compareBookPrices.setShippingCost(converterService.priceConventer(element.getDelivery().getLowestPrice().getAmount()));
             compareBookPricesList.add(compareBookPrices);
         }
 
         return compareBookPricesList;
     }
 
-    private List<CompareBookPrices> checkGoogleStore(List<CompareBookPrices> compareBookPricesList, Book book, Item itemBook) {
+    private List<CompareBookPrices> checkGoogleStore(List<CompareBookPrices> compareBookPricesList, Item itemBook) {
 
         if (!itemBook.getSaleInfo().getSaleability().equals("FOR_SALE")) return compareBookPricesList;
 
@@ -138,13 +138,11 @@ public class SearchBookService {
         CompareBookPrices compareBookPrices = helionService.helionCheckPrice(book.getIsbn10());
         CompareBookPrices compareBookPrices2 = helionService.helionCheckPrice(book.getIsbn13());
 
-        if(compareBookPrices != null){
+        if(compareBookPrices != null)
             compareBookPricesList.add(compareBookPrices);
-        }
 
-        if(compareBookPrices2 != null){
+        if(compareBookPrices2 != null)
             compareBookPricesList.add(compareBookPrices2);
-        }
 
         return compareBookPricesList;
     }
@@ -154,47 +152,12 @@ public class SearchBookService {
         CompareBookPrices compareBookPrices = bookBookService.bookBookCheckPrice(book.getIsbn10());
         CompareBookPrices compareBookPrices2 = bookBookService.bookBookCheckPrice(book.getIsbn13());
 
-        if(compareBookPrices != null){
+        if(compareBookPrices != null)
             compareBookPricesList.add(compareBookPrices);
-        }
 
-        if(compareBookPrices2 != null){
+        if(compareBookPrices2 != null)
             compareBookPricesList.add(compareBookPrices2);
-        }
 
         return compareBookPricesList;
     }
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
