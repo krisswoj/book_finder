@@ -124,8 +124,7 @@ public class AllegroServices {
 
                 .setParameter("categoryId", bookCategory)
                 .setParameters(nameValuePairList(allegroSellersId))
-                .setParameter("name", searchPhrase)
-                .setParameter("sort", "sellingMode.price.amount (ASC)");
+                .setParameter("name", searchPhrase);
 
         HttpGet httpGet = new HttpGet(builder.build());
 
