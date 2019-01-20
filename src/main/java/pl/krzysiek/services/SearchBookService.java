@@ -16,23 +16,23 @@ import java.util.*;
 @Service
 public class SearchBookService {
 
-    @Autowired
     private GoogleBooksService googleBooksService;
-
-    @Autowired
     private AllegroServices allegroServices;
-
-    @Autowired
     private ConverterService converterService;
-
-    @Autowired
     private HelionService helionService;
-
-    @Autowired
     private BookBookService bookBookService;
 
     @Value("${ALLEGRO_OFFER_URL}")
     private String allegroUrl;
+
+    @Autowired
+    public SearchBookService(GoogleBooksService googleBooksService, AllegroServices allegroServices, ConverterService converterService, HelionService helionService, BookBookService bookBookService) {
+        this.googleBooksService = googleBooksService;
+        this.allegroServices = allegroServices;
+        this.converterService = converterService;
+        this.helionService = helionService;
+        this.bookBookService = bookBookService;
+    }
 
     public List<Book> findBook(String bookTitle) throws IOException, URISyntaxException {
 
@@ -55,9 +55,9 @@ public class SearchBookService {
 
             setIsbn(itemBook.getVolumeInfo().getIndustryIdentifiers(), book);
             checkGoogleStore(compareBookPricesList, itemBook);
-
             checkAllegro(compareBookPricesList, book.getIsbn10(), book.getIsbn13(), book);
-            checkHelionStore(compareBookPricesList, book);
+
+//            checkHelionStore(compareBookPricesList, book);
 //            checkBookBookStore(compareBookPricesList, book);
 
             compareBookPricesList.sort(Comparator.comparing(CompareBookPrices::getPrice));
