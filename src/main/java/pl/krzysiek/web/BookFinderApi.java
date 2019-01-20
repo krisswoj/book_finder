@@ -40,8 +40,8 @@ public class BookFinderApi {
         this.searchBookService = searchBookService;
     }
 
-    @GetMapping(value = "/allegro-auctions/{value}")
-    public AllegroApiResponeAuction allegroApiResponeAuction (@PathVariable(value = "value") String searchPositions) throws IOException, URISyntaxException {
+    @GetMapping(value = "/allegro-auctions", params = "code")
+    public AllegroApiResponeAuction allegroApiResponeAuction (@RequestParam(value = "code") String searchPositions) throws IOException, URISyntaxException {
         return allegroServices.allegroAuctionRespone(searchPositions);
     }
 
