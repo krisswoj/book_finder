@@ -117,14 +117,10 @@ public class AllegroServices {
 
         URIBuilder builder = new URIBuilder(offersUrl);
         builder
-//                .setParameter("categoryId", bookCategory)
-//                .setParameters(nameValuePairList(allegroSellersId))
-//                .setParameter("searchMode", "DESCRIPTIONS")
-//                .setParameter("phrase", searchPhrase);
-
                 .setParameter("categoryId", bookCategory)
                 .setParameters(nameValuePairList(allegroSellersId))
-                .setParameter("name", searchPhrase);
+                .setParameter("searchMode", "DESCRIPTIONS")
+                .setParameter("phrase", searchPhrase);
 
         HttpGet httpGet = new HttpGet(builder.build());
 
