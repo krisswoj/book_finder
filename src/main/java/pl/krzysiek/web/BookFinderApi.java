@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import pl.krzysiek.api.allegro_api.AllegroApiResponeAuction;
 import pl.krzysiek.domain.AllegroToken;
 import pl.krzysiek.domain.Book;
 import pl.krzysiek.repository.ICurrencyRepository;
@@ -24,20 +25,25 @@ import java.util.*;
 @RestController
 public class BookFinderApi {
 
-    @Autowired
     private CurrencyService currencyService;
-
-    @Autowired
     private ICurrencyRepository currencyRepository;
-
-    @Autowired
     private AllegroServices allegroServices;
-
-    @Autowired
     private SearchBookService searchBookService;
 
     private Gson gson = new Gson();
 
+    @Autowired
+    public BookFinderApi(CurrencyService currencyService, ICurrencyRepository currencyRepository, AllegroServices allegroServices, SearchBookService searchBookService) {
+        this.currencyService = currencyService;
+        this.currencyRepository = currencyRepository;
+        this.allegroServices = allegroServices;
+        this.searchBookService = searchBookService;
+    }
+
+    @GetMapping(value = "/allegro-auctions/{value}")
+    public AllegroApiResponeAuction allegroApiResponeAuction (@PathVariable(value = "value") String searchPositions) throws IOException, URISyntaxException {
+        return allegroServices.allegroAuctionRespone(searchPositions);
+    }
 
     @GetMapping(value = "/find", params = "book")
     public String checkBookPrices(@RequestParam(value = "book") String bookName) throws IOException, URISyntaxException {

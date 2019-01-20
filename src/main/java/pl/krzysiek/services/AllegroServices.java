@@ -129,8 +129,7 @@ public class AllegroServices {
         CloseableHttpResponse response = client.execute(httpGet);
         String res = converterService.HttpResponseConverter(response);
         client.close();
-
-
+        
         return gson.fromJson(res, AllegroApiResponeAuction.class);
     }
 
