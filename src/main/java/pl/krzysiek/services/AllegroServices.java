@@ -117,10 +117,15 @@ public class AllegroServices {
 
         URIBuilder builder = new URIBuilder(offersUrl);
         builder
+//                .setParameter("categoryId", bookCategory)
+//                .setParameters(nameValuePairList(allegroSellersId))
+//                .setParameter("searchMode", "DESCRIPTIONS")
+//                .setParameter("phrase", searchPhrase);
+
                 .setParameter("categoryId", bookCategory)
                 .setParameters(nameValuePairList(allegroSellersId))
-                .setParameter("searchMode", "DESCRIPTIONS")
-                .setParameter("phrase", searchPhrase);
+                .setParameter("name", searchPhrase)
+                .setParameter("sort", "sellingMode.price.amount (ASC)");
 
         HttpGet httpGet = new HttpGet(builder.build());
 
@@ -129,7 +134,7 @@ public class AllegroServices {
         CloseableHttpResponse response = client.execute(httpGet);
         String res = converterService.HttpResponseConverter(response);
         client.close();
-        
+
         return gson.fromJson(res, AllegroApiResponeAuction.class);
     }
 
