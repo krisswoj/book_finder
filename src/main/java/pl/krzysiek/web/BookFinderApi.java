@@ -7,10 +7,12 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.krzysiek.api.allegro_api.AllegroApiResponeAuction;
+import pl.krzysiek.domain.AllegroForApp;
 import pl.krzysiek.domain.AllegroToken;
 import pl.krzysiek.domain.Book;
 import pl.krzysiek.repository.ICurrencyRepository;
 import pl.krzysiek.domain.Currency;
+import pl.krzysiek.services.AllegroForAppService;
 import pl.krzysiek.services.AllegroServices;
 import pl.krzysiek.services.CurrencyService;
 import pl.krzysiek.services.SearchBookService;
@@ -29,20 +31,34 @@ public class BookFinderApi {
     private ICurrencyRepository currencyRepository;
     private AllegroServices allegroServices;
     private SearchBookService searchBookService;
+    private AllegroForAppService allegroForAppService;
 
     private Gson gson = new Gson();
 
     @Autowired
-    public BookFinderApi(CurrencyService currencyService, ICurrencyRepository currencyRepository, AllegroServices allegroServices, SearchBookService searchBookService) {
+    public BookFinderApi(CurrencyService currencyService,
+                         ICurrencyRepository currencyRepository,
+                         AllegroServices allegroServices,
+                         SearchBookService searchBookService,
+                         AllegroForAppService allegroForAppService) {
         this.currencyService = currencyService;
         this.currencyRepository = currencyRepository;
         this.allegroServices = allegroServices;
         this.searchBookService = searchBookService;
+        this.allegroForAppService = allegroForAppService;
     }
 
     @GetMapping(value = "/allegro-auctions", params = "code")
     public AllegroApiResponeAuction allegroApiResponeAuction (@RequestParam(value = "code") String searchPositions) throws IOException, URISyntaxException {
         return allegroServices.allegroAuctionRespone(searchPositions);
+    }
+
+    @GetMapping(value = "/afp", params = "code")
+    public String allegroForAppApiResponeAuction (@RequestParam(value = "code") String searchPositions) throws IOException, URISyntaxException {
+
+        Type founderListType = new TypeToken<List<AllegroForApp>>() {
+        }.getType();
+        return gson.toJson(allegroForAppService.allegroAuctionsForApp(searchPositions), founderListType);
     }
 
     @GetMapping(value = "/find", params = "book")
