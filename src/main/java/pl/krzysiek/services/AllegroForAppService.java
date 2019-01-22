@@ -28,9 +28,15 @@ public class AllegroForAppService {
         AllegroApiResponeAuction allegroApiResponeAuction = allegroServices.allegroAuctionRespone(positionName);
 
         for (Regular auction : allegroApiResponeAuction.getItems().getRegular()) {
+            AllegroForApp allegroForApp = new AllegroForApp();
 
+            allegroForApp.setAuctionName(auction.getName());
+            allegroForApp.setAuctionNumber(auction.getId());
+            allegroForApp.setProductPrice(auction.getSellingMode().getPrice().getAmount());
+            allegroForApp.setAuctionImage(verifyPictureIsNotNull(auction));
+            allegroForApp.setLowestPriceDelivery(auction.getDelivery().getLowestPrice().getAmount());
 
-            allegroForAppList.add(allegroForApp(auction));
+            allegroForAppList.add(allegroForApp);
         }
 
         return allegroForAppList;
@@ -38,18 +44,5 @@ public class AllegroForAppService {
 
     private String verifyPictureIsNotNull(Regular regular) {
         return (regular.getImages().size() != 0) ? regular.getImages().get(0).getUrl() : NO_IMAGE_AVAILABLE_PNG;
-    }
-
-    private AllegroForApp allegroForApp (Regular auction){
-        AllegroForApp allegroForApp = new AllegroForApp();
-
-        allegroForApp.setAuctionName(auction.getName());
-        allegroForApp.setAuctionNumber(auction.getId());
-        allegroForApp.setProductPrice(auction.getSellingMode().getPrice().getAmount());
-        allegroForApp.setAuctionImage(verifyPictureIsNotNull(auction));
-        allegroForApp.setLowestPriceDelivery(auction.getDelivery().getLowestPrice().getAmount());
-
-        return allegroForApp;
-
     }
 }
