@@ -25,10 +25,9 @@ public class AllegroForAppService {
     }
 
     public List<AllegroForApp> allegroAuctionsForApp(String positionName) throws IOException, URISyntaxException {
-        HashMap<String, AllegroForApp> allegroForAppHashMap = new HashMap<String, AllegroForApp>();
-
         AllegroApiResponeAuction allegroApiResponeAuction = allegroServices.allegroAuctionRespone(positionName);
 
+        HashMap<String, AllegroForApp> allegroForAppHashMap = new HashMap<>();
         for (Regular auction : allegroApiResponeAuction.getItems().getRegular()) {
             allegroForAppHashMap.put(auction.getName(), allegroForAppObject(auction));
         }
@@ -36,18 +35,17 @@ public class AllegroForAppService {
         return new ArrayList<>(allegroForAppHashMap.values());
     }
 
-    private String verifyPictureIsNotNull(Regular regular) {
-        return (regular.getImages().size() != 0) ? regular.getImages().get(0).getUrl() : NO_IMAGE_AVAILABLE_PNG;
-    }
-
     private AllegroForApp allegroForAppObject(Regular auction) {
         AllegroForApp allegroForApp = new AllegroForApp();
-
         allegroForApp.setAuctionName(auction.getName());
         allegroForApp.setAuctionNumber(auction.getId());
         allegroForApp.setProductPrice(auction.getSellingMode().getPrice().getAmount());
         allegroForApp.setAuctionImage(verifyPictureIsNotNull(auction));
         allegroForApp.setLowestPriceDelivery(auction.getDelivery().getLowestPrice().getAmount());
+        return allegroForApp;
+    }
 
+    private String verifyPictureIsNotNull(Regular regular) {
+        return (regular.getImages().size() != 0) ? regular.getImages().get(0).getUrl() : NO_IMAGE_AVAILABLE_PNG;
     }
 }
