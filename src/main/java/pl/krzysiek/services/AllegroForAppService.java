@@ -32,7 +32,12 @@ public class AllegroForAppService {
             allegroForAppHashMap.put(auction.getName(), allegroForAppObject(auction));
         }
 
-        return new ArrayList<>(allegroForAppHashMap.values());
+        List<AllegroForApp> allegroForAppList = new ArrayList<>();
+        for(AllegroForApp app : allegroForAppHashMap.values()){
+            allegroForAppList.add(app);
+        }
+
+        return allegroForAppList;
     }
 
     private AllegroForApp allegroForAppObject(Regular auction) {
